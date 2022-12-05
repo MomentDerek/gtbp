@@ -1,0 +1,5 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://1.117.96.68:5432/genshin_tianli_bp
+    username: postgres
+    password:
