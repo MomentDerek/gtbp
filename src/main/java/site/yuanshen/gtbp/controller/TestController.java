@@ -1,6 +1,5 @@
 package site.yuanshen.gtbp.controller;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,6 @@ import site.yuanshen.gtbp.model.response.RUtils;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/")
-@Tag(name = "test", description = "测试api")
 public class TestController {
 
     /**

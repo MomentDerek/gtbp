@@ -31,7 +31,7 @@ dependencies {
 //    implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springdoc:springdoc-openapi-webflux-ui:1.6.14")
+//    implementation("org.springdoc:springdoc-openapi-webflux-ui:1.6.14")
     implementation("org.apache.commons:commons-lang3:3.12.0")
     implementation("com.alibaba.fastjson2:fastjson2:2.0.21.graal")
     compileOnly("org.projectlombok:lombok")

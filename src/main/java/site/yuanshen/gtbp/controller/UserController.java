@@ -1,6 +1,5 @@
 package site.yuanshen.gtbp.controller;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -17,7 +16,6 @@ import site.yuanshen.gtbp.service.UserService;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
-@Tag(name = "user", description = "用户API")
 public class UserController {
 
     private final UserService userService;
