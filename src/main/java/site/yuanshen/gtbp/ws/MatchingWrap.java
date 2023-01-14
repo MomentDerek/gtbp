@@ -2,7 +2,6 @@ package site.yuanshen.gtbp.ws;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import site.yuanshen.gtbp.model.User;
 
@@ -29,7 +28,10 @@ public class MatchingWrap {
 
     public static User getCompetitor(User user) {
         User competitor = getClosestUser(user);
-        if (competitor == null) matchingSet.put(user, LocalTime.now());
+        if (competitor == null) {
+            matchingSet.put(user, LocalTime.now());
+            return;
+        }
         if (Math.abs(competitor.getScore() - user.getScore()) >= 500) {
             matchingSet.put(user, LocalTime.now());
             // 定时任务10s
@@ -41,7 +43,10 @@ public class MatchingWrap {
 
     private static void callCompetitorFirstLevel(User user) {
         User competitor = getClosestUser(user);
-        if (competitor == null) scheduledExecutorService.schedule(() -> callCompetitorFirstLevel(user), 5, TimeUnit.SECONDS);
+        if (competitor == null) {
+            scheduledExecutorService.schedule(() -> callCompetitorFirstLevel(user), 5, TimeUnit.SECONDS);
+            return;
+        }
         if (Math.abs(competitor.getScore() - user.getScore()) >= 1000) {
             scheduledExecutorService.schedule(() -> callCompetitorSecondLevel(user), 10, TimeUnit.SECONDS);
         }
@@ -50,14 +55,18 @@ public class MatchingWrap {
 
     private static void callCompetitorSecondLevel(User user) {
         User competitor = getClosestUser(user);
-        if (competitor == null) scheduledExecutorService.schedule(() -> callCompetitorSecondLevel(user), 5, TimeUnit.SECONDS);
+        if (competitor == null)
+            scheduledExecutorService.schedule(() -> callCompetitorSecondLevel(user), 5, TimeUnit.SECONDS);
         // 分配对手
     }
 
     private static User getClosestUser(User user) {
+        User higher;
+        User lower;
+        boolean isHigher;
         synchronized (matchingSet) {
-            User higher = matchingSet.higherKey(user);
-            User lower = matchingSet.lowerKey(user);
+            higher = matchingSet.higherKey(user);
+            lower = matchingSet.lowerKey(user);
             //判空
             if (higher == null) {
                 if (lower != null) {
@@ -71,9 +80,9 @@ public class MatchingWrap {
                 return higher;
             }
             //判断哪个距离更短
-            boolean isHigher = higher.getScore() - user.getScore() - (user.getScore() - lower.getScore()) > 0;
+            isHigher = higher.getScore() - user.getScore() - (user.getScore() - lower.getScore()) > 0;
             matchingSet.remove(isHigher ? higher : lower);
-            return isHigher ? higher : lower;
         }
+        return isHigher ? higher : lower;
     }
 }
